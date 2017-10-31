@@ -21,7 +21,7 @@ app.use(morgan('tiny'));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 mongoose.Promise = global.Promise; // Use new EcmaScript 6 promises
-var mongoConnection = mongoose.connect(config.mongoDBhost).connection;
+var mongoConnection = mongoose.connect(config.mongoDBhost, {useMongoClient: true});
 mongoConnection.on('error', function(err) {
     console.error(err.message);
     console.error("MongoDB connection failed");
