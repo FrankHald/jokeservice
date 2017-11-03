@@ -15,18 +15,11 @@ $('#createJoke').submit(function(event) {
 });
 
 $('#postForm').submit(function(event) {
-  var address = 'https://bestjokeseu.herokuapp.com/';
-  var name = 'Frank og David';
-  var secret = $('#postSecret');
-
-  addRegistry(name, secret.val(), address);
+  addRegistry();
 });
 
 $('#deleteForm').submit(function(event) {
-  var address = 'https://bestjokeseu.herokuapp.com/';
-  var secret = $('#deleteSecret');
-
-  removeRegistry(secret.val(), address);
+  removeRegistry();
 });
 
 $('body').scrollspy({ target: '#bs-example-navbar-collapse-1' });
@@ -106,8 +99,8 @@ function addJokes(address, name, _registryName) {
   }
 }
 
-function removeRegistry(secret, address) {
-  var url = '/registry?secret=' + secret + '&address=' + address;
+function removeRegistry() {
+  var url = '/registry';
     $.ajax({
       url: url,
       type: 'DELETE',
@@ -117,9 +110,9 @@ function removeRegistry(secret, address) {
     });
 }
 
-function addRegistry(name, secret, address) {
+function addRegistry() {
   var url = '/registry';
-  $.post(url, {name: name, address: address, secret: secret})
+  $.post(url)
     .then(function(response) {
       console.log(response);
     })
