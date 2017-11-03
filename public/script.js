@@ -1,5 +1,6 @@
 var jokeId = 0;
 var registryName = 'a';
+var registryUrl = 'https://krdo-joke-registry.herokuapp.com/api/services/';
 
 $('#createJoke').submit(function(event) {
   var setup = $('#setup');
@@ -11,6 +12,21 @@ $('#createJoke').submit(function(event) {
   punchline.val('');
 
   event.preventDefault();
+});
+
+$('#postForm').submit(function(event) {
+  var address = 'https://bestjokeseu.herokuapp.com/';
+  var name = 'Frank og David';
+  var secret = $('#postSecret');
+
+  addRegistry(name, secret.val(), address);
+});
+
+$('#deleteForm').submit(function(event) {
+  var address = 'https://bestjokeseu.herokuapp.com/';
+  var secret = $('#deleteSecret');
+
+  removeRegistry(secret.val(), address);
 });
 
 $('body').scrollspy({ target: '#bs-example-navbar-collapse-1' });
@@ -90,6 +106,28 @@ function addJokes(address, name, _registryName) {
   }
 }
 
+function removeRegistry(secret, address) {
+  var url = '/registry?secret=' + secret + '&address=' + address;
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function(result) {
+          console.log(result);
+        }
+    });
+}
+
+function addRegistry(name, secret, address) {
+  var url = '/registry';
+  $.post(url, {name: name, address: address, secret: secret})
+    .then(function(response) {
+      console.log(response);
+    })
+    .catch(function(error) {
+      console.log(error)
+    });
+}
+
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
 }
@@ -100,8 +138,9 @@ function nextChar() {
 
 
 getJokes('/api/jokes', 'jokes');
-getRegistry('https://krdo-joke-registry.herokuapp.com/api/services');
-//getJokes('https://mongodmu.herokuapp.com/api/jokes', 'others');
+getRegistry(registryUrl);
 
-//var url = window.location.href;
-//getJokes(url + '/json', 'others');
+//curl -d "name=frankdavid&address=frankdavid&secret=frankdavid" -X POST https://krdo-joke-registry.herokuapp.com/api/services
+//curl -d "address=frankdavid&secret=frankdavid" -X DELETE https://krdo-joke-registry.herokuapp.com/api/services
+
+//curl -d "secret=frankdavid&address=https://bestjokeseu.herokuapp.com/" -X DELETE https://krdo-joke-registry.herokuapp.com/api/services
