@@ -13,7 +13,23 @@
   <script defer src="script.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-spy="scroll" data-target="#bs-example-navbar-collapse-1">
+  <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Joke service</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#createJoke">Tilføj egen joke</a></li>
+        <li><a href="#bestJokes">De bedste jokes</a></li>
+        <li><a href="#otherJokes">Andres jokes</a></li>
+        <li><a href="#registry2">Registry</a></li>
+        <li><a href="#registryForm">Tilføj/fjern fra registry</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
   <div class="container">
     <div class="jumbotron">
@@ -48,13 +64,13 @@
       </div>
     </form>
 
-    <h2>De bedste jokes</h2>
+    <h2 id="bestJokes">De bedste jokes</h2>
     <div class="panel-group" id="jokes" role="tablist" aria-multiselectable="true">
     </div>
-    <h2>Andres lorte jokes</h2>
+    <h2 id="otherJokes">Andres jokes</h2>
     <div class="panel-group" id="others" role="tablist" aria-multiselectable="true">
     </div>
-    <h2>Registry</h2>
+    <h2 id="registry2">Registry</h2>
     <table class="table" id="registry">
       <thead>
         <tr>
@@ -62,7 +78,6 @@
           <th>Name</th>
           <th>Address</th>
           <th>Timestamp</th>
-          <th>Add</th>
         </tr>
       </thead>
       <tbody>
@@ -70,7 +85,7 @@
     </table>
   </div>
 
-  <div class="col-lg-6 col-lg-offset-3">
+  <div id="registryForm" class="col-lg-6 col-lg-offset-3">
     <form class="form" action="https://krdo-joke-registry.herokuapp.com/api/services" method="post">
       <div class="form-group">
         Name: <input type="text" name="name" class="form-control">

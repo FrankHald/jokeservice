@@ -1,3 +1,6 @@
+var jokeId = 0;
+var registryName = 'a';
+
 $('#createJoke').submit(function(event) {
   var setup = $('#setup');
   var punchline = $('#punchline');
@@ -10,18 +13,23 @@ $('#createJoke').submit(function(event) {
   event.preventDefault();
 });
 
+$('body').scrollspy({ target: '#bs-example-navbar-collapse-1' });
+
 function getJokes(url, id) {
   $('#' + id).empty();
   $.get('joke.hbs', function(template) {
     var compiled = Handlebars.compile(template);
       $.getJSON(url, function(data) {
         data.forEach(function(element, i) {
-          var html = compiled({
-            setup: element.setup,
-            punchline: element.punchline,
-            index: i
-          });
-          $('#' + id).append(html);
+          if (!(isBlank(element.setup) || isBlank(element.punchline))) {
+            var html = compiled({
+              setup: element.setup,
+              punchline: element.punchline,
+              index: jokeId
+            });
+            jokeId++;
+            $('#' + id).append(html);
+          }
         });
       });
     }
@@ -40,6 +48,8 @@ function getRegistry(url) {
             timestamp: element.timestamp
           });
           $('#registry tbody').append(html);
+          addJokes(element.address, element.name, registryName + 'registry');
+          nextChar();
         });
       });
     }
@@ -58,15 +68,34 @@ function postJoke(setup, punchline){
 }
 
 
-function addJokes(address) {
+function addJokes(address, name, _registryName) {
   var regexp = /https:\/\/(.*)/;
   var url = regexp.exec(address);
   if (url != null) {
-    //alert(url[1]);
-    getJokes('/registry/' + url[1] + 'json', 'others');
+    $.get('registryDiv.hbs', function(template) {
+      var compiled = Handlebars.compile(template);
+      var html = compiled({
+        address: address,
+        name: name,
+        registryName: _registryName
+      });
+      $('#others').append(html);
+    });
+    if (url[1].substr(url[1].length-2, url[1].length-1) === '//') {
+      url[1] = url[1].slice(0, -1);
+    }
+    getJokes('/registry/' + url[1], _registryName);
   } else {
-    alert('Den her url sucks');
+    console.log('Den her url sucks');
   }
+}
+
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}
+
+function nextChar() {
+    registryName = String.fromCharCode(registryName.charCodeAt(0) + 1);
 }
 
 

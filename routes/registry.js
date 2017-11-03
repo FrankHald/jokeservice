@@ -1,6 +1,6 @@
 module.exports = function(express, requestPromise, path) {
   var router = express.Router();
-  router.route('/registry/:url/json')
+  router.route('/registry/:url')
     .get(function(req, res) {
       var url = req.params.url;
       var options = {
