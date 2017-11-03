@@ -14,5 +14,9 @@
   {
     "setup": "Doctor says to his patient: 'You have cancer and Alzheimer.'",
     "punchline": "Patient: 'At least I don't have cancer.'"
+  },
+  {
+    "setup": "Why did Elon Musk choose SpaceX to land on mars?",
+    "punchline": "Because if he chose SpaceY he’d land on 14 year old boys."
   }
 ]

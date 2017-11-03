@@ -8,12 +8,14 @@ var morgan = require('morgan');
 var favicon = require('serve-favicon');
 var path = require('path');
 var mongoose = require('mongoose');
+var requestPromise = require('request-promise');
 
 app.use(express.static(__dirname + '/public'));
 
 // INITIALIZATION
 // =============================================================================
 app.set('port', (process.env.PORT || config.defaultPort));
+app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -34,7 +36,9 @@ mongoConnection.once('open', function() {
 // =============================================================================
 
 var jokeRouter = require('./routes/joke')(express);
+var registryRouter = require('./routes/registry')(express, requestPromise, path);
 app.use(jokeRouter);
+app.use(registryRouter);
 
 // START THE SERVER
 // =============================================================================

@@ -26,7 +26,7 @@ function getJokes(url, id) {
       });
     }
   );
-};
+}
 
 function getRegistry(url) {
   $.get('registry.hbs', function(template) {
@@ -44,7 +44,7 @@ function getRegistry(url) {
       });
     }
   );
-};
+}
 
 function postJoke(setup, punchline){
   var url = '/api/jokes';
@@ -58,6 +58,21 @@ function postJoke(setup, punchline){
 }
 
 
+function addJokes(address) {
+  var regexp = /https:\/\/(.*)/;
+  var url = regexp.exec(address);
+  if (url != null) {
+    //alert(url[1]);
+    getJokes('/registry/' + url[1] + 'json', 'others');
+  } else {
+    alert('Den her url sucks');
+  }
+}
+
+
 getJokes('/api/jokes', 'jokes');
 getRegistry('https://krdo-joke-registry.herokuapp.com/api/services');
 //getJokes('https://mongodmu.herokuapp.com/api/jokes', 'others');
+
+//var url = window.location.href;
+//getJokes(url + '/json', 'others');
